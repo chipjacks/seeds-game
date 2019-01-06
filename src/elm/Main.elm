@@ -115,7 +115,11 @@ updateContext model f =
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( initialState flags
-    , bounceKeyframes flags.window
+      -- , bounceKeyframes flags.window
+    , Cmd.batch
+        [ bounceKeyframes flags.window
+        , trigger <| InitLevel <| Worlds.levelConfig <| Levels.keyFromRaw_ 1 7
+        ]
     )
 
 
@@ -703,7 +707,7 @@ menu scene =
             renderMenu model.context HubMsg Hub.menuOptions
 
         Level model ->
-            renderMenu model.context LevelMsg <| Level.menuOptions model.context
+            renderMenu model.context LevelMsg <| Level.menuOptions model
 
         Garden model ->
             renderMenu model.context GardenMsg Garden.menuOptions
